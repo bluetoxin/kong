@@ -61,7 +61,8 @@
         name: example_route
         paths:
           - /
-    changed_when: service.status == 201
-    failed_when: not service.status in [409, 201]
+    changed_when: route.status == 201
+    failed_when: not route.status in [409, 201]
+    register: route
 
     
