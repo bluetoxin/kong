@@ -1,0 +1,17 @@
+prefix = /usr/local/kong/
+log_level = notice
+plugins = rate-limiting
+anonymous_reports = off
+trusted_ips = 0.0.0.0/0
+nginx_proxy_proxy_buffers = 4 256k
+nginx_daemon=off
+headers=off
+dns_no_sync=true
+database = postgres
+pg_host={{ pg_host }}
+pg_user={{ pg_user }}
+pg_password={{ pg_password }}
+pg_database={{ pg_database }}
+pg_port={{ pg_port }}
+proxy_listen = 0.0.0.0:8000, 0.0.0.0:8443 ssl
+admin_listen = 0.0.0.0:8001,0.0.0.0:8444 ssl

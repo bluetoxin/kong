@@ -1,0 +1,13 @@
+---
+# This playbook deploys kong in PSQL mode
+
+- name: "Setting up PSQL"
+  hosts: dbs
+  roles:
+    - db
+
+- name: "Install Kong API Gateway from source"
+  hosts: proxies
+  roles:
+    - proxy
+

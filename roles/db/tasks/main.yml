@@ -1,0 +1,77 @@
+---
+# Install and set up PSQL
+
+- name: Install necessary requirements
+  apt:
+    name: 
+      - gnupg
+      - pip
+      - libpq-dev
+      - gcc
+    state: present
+    update_cache: yes
+
+- name: Add apt key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add apt package
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ version_ubuntu }}-pgdg main"
+    filename: pgdg
+    state: present
+
+- name: Install PostgeSQL
+  apt:
+    update_cache: yes
+    name: postgresql
+    state: present
+
+- name: Install psycopg2 to manage psql 
+  pip:
+    name: psycopg2
+    state: present
+
+- name: Update PostgreSQL Configuration File
+  lineinfile:
+    path: /etc/postgresql/15/main/postgresql.conf
+    regexp: "^#listen_addresses"
+    line: "listen_addresses = '*'"
+
+- name: Update PostgreSQL Connection in pg_hba.conf File
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    regexp: '^host\s+all\s+all\s+127.0.0.1/32\s+scram-sha-256$'
+    line: "host all all 0.0.0.0/0 md5"
+  notify: start psql
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+
+- name: Setting up PSQL under postgres user
+  become: true
+  become_user: postgres
+  become_method: su
+  notify: restart psql
+  block:
+    - name: Create PostgreSQL user
+      postgresql_user:
+        name: "{{ pg_user }}"
+        password: "{{ pg_password }}"
+        login_user: postgres
+
+    - name: Create PostgreSQL database
+      postgresql_db:
+        name: "{{ pg_database }}"
+        owner: "{{ pg_user }}"
+        login_user: postgres
+
+    - name: Grant all privileges on public schema
+      postgresql_privs:
+        db: "{{ pg_database }}"
+        privs: ALL
+        login: postgres
+        roles: PUBLIC
+        objs: ALL_IN_SCHEMA
+        grant_option: true

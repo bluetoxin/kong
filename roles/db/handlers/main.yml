@@ -1,0 +1,13 @@
+---
+# Handlers to manage PSQL
+
+- name: start psql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: restart psql
+  service:
+    name: postgresql
+    state: restarted

@@ -1,0 +1,4 @@
+version_kong: 3.1.1
+pg_host: servers-db-1
+pg_port: 5432
+

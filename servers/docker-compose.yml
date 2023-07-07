@@ -1,0 +1,26 @@
+version: '3'
+
+x-server: &server
+  platform: linux/amd64
+  restart: always
+  build:
+    context: ./
+  ports:
+    - 0:22
+  networks:
+    - servernetwork
+  ulimits:
+    nofile:
+      soft: 4096
+      hard: 4096
+
+services:
+  proxy:
+    <<: *server
+    ports:
+      - 0:22
+      - 80:8080
+  db: *server
+
+networks:
+  servernetwork:

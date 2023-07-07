@@ -1,0 +1,34 @@
+---
+# This playbook installs kong and configures it 
+
+- name: Change ulimit for kong
+  pam_limits:
+    domain: "*"
+    limit_type: "-"
+    limit_item: nofile
+    value: 4096
+
+- name: Check if kong is already installed
+  command: dpkg-query -W kong
+  changed_when: kong_deb.rc == 1
+  failed_when: kong_deb.rc > 1
+  register: kong_deb
+
+- name: Fetch kong deb-package
+  get_url:
+    url: "https://download.konghq.com/gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
+    dest: /tmp/kong.deb
+  when: kong_deb.changed
+
+- name: Install dpkg package
+  apt:
+    deb: /tmp/kong.deb
+
+- name: Copy config to proxy-host
+  template:
+    src: kong.conf.j2  
+    dest: /etc/kong/kong.conf
+  notify: 
+    - bootstrap kong
+    - restart kong
+
