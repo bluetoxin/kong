@@ -49,6 +49,7 @@
 - name: Force all notified handlers to run at this point, not waiting for normal sync points
   meta: flush_handlers
 
+# Abstraction to reduce redundancy
 - name: Setting up PSQL under postgres user
   become: true
   become_user: postgres
@@ -66,12 +67,3 @@
         name: "{{ pg_database }}"
         owner: "{{ pg_user }}"
         login_user: postgres
-
-    - name: Grant all privileges on public schema
-      postgresql_privs:
-        db: "{{ pg_database }}"
-        privs: ALL
-        login: postgres
-        roles: PUBLIC
-        objs: ALL_IN_SCHEMA
-        grant_option: true

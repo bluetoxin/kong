@@ -5,5 +5,5 @@
   command: "kong migrations bootstrap"
 
 - name: restart kong
-  command: "kong restart"
+  raw: "nohup /usr/local/bin/kong restart &"
 
