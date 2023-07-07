@@ -7,22 +7,26 @@
     limit_type: "-"
     limit_item: nofile
     value: 4096
+  tags: [kong, ulimit_kong]
 
 - name: Check if kong is already installed
   command: dpkg-query -W kong
   changed_when: kong_deb.rc == 1
   failed_when: kong_deb.rc > 1
   register: kong_deb
+  tags: [kong, install_kong]
 
 - name: Fetch kong deb-package
   get_url:
     url: "https://download.konghq.com/gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
     dest: /tmp/kong.deb
   when: kong_deb.changed
+  tags: [kong, install_kong]
 
 - name: Install dpkg package
   apt:
     deb: /tmp/kong.deb
+  tags: [kong, install_kong]
 
 - name: Copy config to proxy-host
   template:
@@ -31,4 +35,33 @@
   notify: 
     - bootstrap kong
     - restart kong
+  tags: [kong, setup_kong]
 
+- name: Create kong service and route
+  notify: reload kong
+  tags: [kong, configure_kong]
+  block:
+  - name: Create kong service
+    uri:
+      url: "http://localhost:{{ http_admin_listen }}/services"
+      method: POST
+      body_format: form-urlencoded
+      body:
+        name: example_service
+        url: "http://ifconfig.me"
+    changed_when: service.status == 201
+    failed_when: not service.status in [409, 201]
+    register: service
+  - name: Create kong route
+    uri:
+      url: "http://localhost:{{ http_admin_listen }}/services/{{ service.json.name if service.changed else service.json.fields.name }}/routes"
+      method: POST
+      body_format: form-urlencoded
+      body:
+        name: example_route
+        paths:
+          - /
+    changed_when: service.status == 201
+    failed_when: not service.status in [409, 201]
+
+    

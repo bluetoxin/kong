@@ -7,3 +7,5 @@
 - name: restart kong
   raw: "nohup /usr/local/bin/kong restart &"
 
+- name: reload kong
+  command: "kong reload"

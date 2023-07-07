@@ -10,34 +10,40 @@
       - gcc
     state: present
     update_cache: yes
+  tags: [psql, install_psql]
 
 - name: Add apt key
   apt_key:
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
     state: present
+  tags: [psql, install_psql]
 
 - name: Add apt package
   apt_repository:
     repo: "deb http://apt.postgresql.org/pub/repos/apt {{ version_ubuntu }}-pgdg main"
     filename: pgdg
     state: present
+  tags: [psql, install_psql]
 
 - name: Install PostgeSQL
   apt:
     update_cache: yes
     name: postgresql
     state: present
+  tags: [psql, install_psql]
 
 - name: Install psycopg2 to manage psql 
   pip:
     name: psycopg2
     state: present
+  tags: [psql, install_psql]
 
 - name: Update PostgreSQL Configuration File
   lineinfile:
     path: /etc/postgresql/15/main/postgresql.conf
     regexp: "^#listen_addresses"
     line: "listen_addresses = '*'"
+  tags: [psql, config_psql]
 
 - name: Update PostgreSQL Connection in pg_hba.conf File
   lineinfile:
@@ -45,9 +51,11 @@
     regexp: '^host\s+all\s+all\s+127.0.0.1/32\s+scram-sha-256$'
     line: "host all all 0.0.0.0/0 md5"
   notify: start psql
+  tags: [psql, config_psql]
 
 - name: Force all notified handlers to run at this point, not waiting for normal sync points
   meta: flush_handlers
+  tags: [psql, config_psql]
 
 # Abstraction to reduce redundancy
 - name: Setting up PSQL under postgres user
@@ -55,6 +63,7 @@
   become_user: postgres
   become_method: su
   notify: restart psql
+  tags: [psql, db_user_psql]
   block:
     - name: Create PostgreSQL user
       postgresql_user:
