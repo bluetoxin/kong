@@ -2,10 +2,14 @@
 # Handlers for kong. Uses "command" because ansible isn't able to manage kong using "service" 
 
 - name: bootstrap kong
-  command: "kong migrations bootstrap"
+  command: "kong migrations bootstrap ; sleep 1"
+  listen: "start kong service"
 
 - name: restart kong
-  raw: "nohup /usr/local/bin/kong restart &"
+  service: 
+    name: kong
+    state: restarted 
+  listen: "start kong service"
 
 - name: reload kong
   command: "kong reload"

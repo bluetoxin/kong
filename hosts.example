@@ -1,5 +1,8 @@
 [proxies]
-proxy:55019
+proxy:55002
 
 [dbs]
-db:55018
+db:55000
+dbslave1:55001
+dbslave2:55004
+dbslave3:55003

@@ -26,15 +26,31 @@
 - name: Install dpkg package
   apt:
     deb: /tmp/kong.deb
+  when: kong_deb.changed
   tags: [kong, install_kong]
 
 - name: Copy config to proxy-host
   template:
     src: kong.conf.j2  
     dest: /etc/kong/kong.conf
-  notify: 
-    - bootstrap kong
-    - restart kong
+  notify: start kong service
+  tags: [kong, setup_kong]
+
+- name: Copy kong service config to /etc/init.d/kong
+  template:
+    src: kong.service.j2
+    dest: /etc/init.d/kong
+    mode: a+x
+  notify: start kong service
+  tags: [kong, setup_kong]
+
+- name: Flush all handlers
+  meta: flush_handlers
+  tags: [kong, setup_kong]
+
+- name: Pause for a while to make sure that kong is started
+  pause:
+    seconds: 20
   tags: [kong, setup_kong]
 
 - name: Create kong service and route
@@ -65,4 +81,3 @@
     failed_when: not route.status in [409, 201]
     register: route
 
-    

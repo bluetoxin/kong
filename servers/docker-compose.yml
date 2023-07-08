@@ -21,6 +21,9 @@ services:
       - 0:22
       - 80:8080
   db: *server
+  db_slave1: *server
+  db_slave2: *server
+  db_slave3: *server
 
 networks:
   servernetwork:
