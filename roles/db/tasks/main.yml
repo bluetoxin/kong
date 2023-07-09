@@ -50,8 +50,13 @@
     - name: Update pg_hba.conf
       lineinfile:
         path: /etc/postgresql/15/main/pg_hba.conf
-        regexp: '^host\s+all\s+all\s+127.0.0.1/32\s+scram-sha-256$'
-        line: "host all all 0.0.0.0/0 md5"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^host\s+all\s+all\s+127.0.0.1/32\s+scram-sha-256$', line: "host all all 0.0.0.0/0 trust" }
+        - { regexp: '^local\s+all\s+postgres\s+peer$', line: "local all postgres trust"}
+        - { regexp: '^local\s+all\s+all\s+peer$', line: "local all all trust"}
+        - { regexp: '^local\s+replication\s+all\s+peer$', line: "local replication all trust"}
 
 - name: Force all notified handlers to run at this point, not waiting for normal sync points
   meta: flush_handlers
@@ -63,15 +68,18 @@
   become_method: su
   tags: [psql, db_user_psql]
   block:
-    - name: Create PostgreSQL user
+    - name: Create PostgreSQL for kong user
       postgresql_user:
         name: "{{ pg_user }}"
         password: "{{ pg_password }}"
-
-    - name: Create PostgreSQL database
+    - name: Create PostgreSQL database for kong
       postgresql_db:
         name: "{{ pg_database }}"
         owner: "{{ pg_user }}"
+    - name: Set password for default (postgres) user
+      postgresql_user:
+        name: postgres
+        password: "{{ pg_postgres_password }}"
 
 - name: Check whether citus installed or not
   command: dpkg-query -W postgresql-15-citus-11.3
@@ -107,4 +115,15 @@
     line: "shared_preload_libraries = 'citus'"
   notify: restart psql
   tags: [psql, configure_citus]
-  
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Create extension citus in PostgreSQL
+  become: true
+  become_user: postgres
+  become_method: su
+  postgresql_ext:
+   name: citus
+   db: "{{ pg_database }}"
+  tags: [psql, configure_citus]
