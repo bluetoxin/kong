@@ -10,8 +10,3 @@
   hosts: proxies
   roles:
     - proxy
-
-#- name: "Configure coordinator (master) PostgreSQL node"
-#  hosts: db
-#  roles:
-#    - db_coordinator

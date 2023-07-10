@@ -80,4 +80,3 @@
     changed_when: route.status == 201
     failed_when: not route.status in [409, 201]
     register: route
-
