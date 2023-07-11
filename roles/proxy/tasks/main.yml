@@ -18,7 +18,7 @@
 
 - name: Fetch kong deb-package
   get_url:
-    url: "https://download.konghq.com/gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
+    url: "https://download.konghq.com/{{ kong_version }}"
     dest: /tmp/kong.deb
   when: kong_deb.changed
   tags: [kong, install_kong]

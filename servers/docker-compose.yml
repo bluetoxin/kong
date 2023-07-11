@@ -12,14 +12,23 @@ x-server: &server
   ulimits:
     nofile:
       soft: 4096
-      hard: 4096
+      hard: 64000 # ulimit for MongoDB
 
 services:
   proxy:
     <<: *server
     ports:
       - 0:22
-      - 80:8080
+      - 80:8080 # Kong Proxy Port
+  graylog:
+    <<: *server
+    ports:
+      - 0:22
+      - 9000:9000 # Graylog UI 
+  mongodb: 
+    <<: *server
+    platform: linux/arm64 # Mongo doesn't work with Rosetta 2
+  elasticsearch: *server
   db: *server
 
 networks:

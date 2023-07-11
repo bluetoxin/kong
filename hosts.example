@@ -1,6 +1,15 @@
 [proxies]
-proxy:55002
+proxy:55004
 
 [dbs]
-db:55000
+db:55005
+
+[graylog]
+graylog:55006
+
+[mongodb]
+mongodb:55007
+
+[elasticsearch]
+elasticsearch:55008
 

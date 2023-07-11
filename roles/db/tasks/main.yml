@@ -58,7 +58,7 @@
         - { regexp: '^local\s+all\s+all\s+peer$', line: "local all all trust"}
         - { regexp: '^local\s+replication\s+all\s+peer$', line: "local replication all trust"}
 
-- name: Force all notified handlers to run at this point, not waiting for normal sync points
+- name: Flush all handlers
   meta: flush_handlers
   tags: [psql, config_psql]
 

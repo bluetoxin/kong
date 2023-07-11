@@ -1,12 +1,33 @@
 ---
 # This playbook deploys kong in PSQL mode
 
-- name: "Setting up PostgreSQL"
+- name: "Install and configure PostgreSQL (DB for Kong)"
   hosts: dbs
+  vars:
+    kong_version: "gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
   roles:
     - db
 
-- name: "Install Kong API Gateway"
+- name: "Install and configure Kong API Gateway"
   hosts: proxies
   roles:
     - proxy
+
+- name: "Install and configure MondoDB"
+  hosts: mongodbs
+  vars:
+    mongodb_version: "mongodb-linux-{{ arch }}-{{ version_ubuntu }}-{{ version_mongodb }}"
+  roles:
+    - mongo
+
+- name: "Install and configure ElasticSearch"
+  hosts: elasticsearches
+  roles:
+    - elastic
+
+- name: "Install and configure Graylog"
+  hosts: graylogs
+  roles:
+    - graylog
+
+

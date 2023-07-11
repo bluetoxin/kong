@@ -1,0 +1,61 @@
+---
+# Install mongodb master node using tar.gz
+
+- name: Change ulimit to 64000
+  pam_limits:
+    domain: "*"
+    limit_type: "-"
+    limit_item: nofile
+    value: 64000
+  tags: [mongo, install_mongo]
+
+- name: Install dependencies
+  apt:
+    name: 
+      - libcurl4
+      - openssl
+      - liblzma5
+    state: present
+    update_cache: yes
+  tags: [mongo, install_mongo]  
+
+- name: Copy init.d service file to manage mongod-service
+  template:
+    src: mongod.service.j2
+    dest: /etc/init.d/mongod
+    mode: a+x
+  notify: start mongo
+  tags: [mongo, install_mongo]
+
+- name: Fetch and unarchive mongodb tarball
+  unarchive:
+    src: "https://fastdl.mongodb.org/linux/{{ mongodb_version }}.tgz"
+    dest: /tmp
+    remote_src: yes
+  notify: start mongo
+  tags: [mongo, install_mongo]
+
+- name: Get all mongo related binaries
+  find:
+    path: "/tmp/{{ mongodb_version }}/bin"
+  register: mongo_binaries
+  tags: [mongo, install_mongo]
+
+- name: Create symlinks for all binaries in /usr/local/bin
+  file:
+    name: "/usr/local/bin/{{ item.path | basename }}" 
+    src: "{{ item.path }}"
+    state: link 
+  loop: "{{ mongo_binaries.files }}"
+  tags: [mongo, install_mongo]
+  
+- name: Create necessary directories for mongodb
+  file:
+    name: "{{ item }}"
+    state: directory
+    force: yes
+  loop:
+    - /var/lib/mongo
+    - /var/log/mongodb
+  tags: [mongo, install_mongo]
+

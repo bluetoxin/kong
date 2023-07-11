@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# MongoDB: MongoDB daemon script
+#
+### BEGIN INIT INFO
+# Provides:          mongod
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Description:       Start/stop mongod
+### END INIT INFO
+DAEMON="/usr/local/bin/mongod"
+DAEMON_ARGS="--dbpath /var/lib/mongo --logpath /var/log/mongodb/mongod.log --fork"
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+    echo "Starting $DAEMON"
+    start-stop-daemon --start --background --exec $DAEMON -- $DAEMON_ARGS
+    ;;
+  stop)
+    echo "Stopping $DAEMON"
+    start-stop-daemon --stop --exec $DAEMON
+    ;;
+  restart)
+    echo "Restarting $DAEMON"
+    start-stop-daemon --stop --exec $DAEMON
+    sleep 1
+    start-stop-daemon --start --background --exec $DAEMON -- $DAEMON_ARGS
+    ;;
+  status)
+      PID=$(pidof mongod)
+      if [ -z "$PID" ]; then 
+        echo "$DAEMON isn't running"
+      else
+        echo "$DAEMON is running (PID: $PID)"
+      fi
+    ;;
+  *)
+    echo "Usage: service mongod {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0

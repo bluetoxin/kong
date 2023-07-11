@@ -1,0 +1,5 @@
+---
+# Handlers to manage MongoDB
+
+- name: start mongo
+  command: service mongod start # TODO: Issue with 'ansible.builtin.service'
