@@ -1,0 +1,32 @@
+---
+# Install ElasticSearch 7.10.2 (the only version that is compatible with Graylog 5.0)
+
+- name: Install gnupg
+  apt:
+    name: gnupg
+    state: present
+    update_cache: yes
+
+- name: Add apt-key for ElasticSearch
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add apt-repository for ElasticSearch
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main
+    state: present
+
+- name: Install elasticsearch-oss
+  apt:
+    name: elasticsearch-oss
+    state: present
+    update_cache: yes
+  notify: restart es
+
+- name: Alter ElasticSearch config file to use it with Graylog
+  blockinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    block: |  
+      cluster.name: graylog
+      action.auto_create_index: false

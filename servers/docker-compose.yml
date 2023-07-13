@@ -28,7 +28,12 @@ services:
   mongodb: 
     <<: *server
     platform: linux/arm64 # Mongo doesn't work with Rosetta 2
-  elasticsearch: *server
+  elasticsearch: 
+    <<: *server
+    platform: linux/arm64 # Same as Mongo (doesn't support Rosetta 2)
+    ports:
+      - 0:22
+      - 9200:9200 # ES default port
   db: *server
 
 networks:
