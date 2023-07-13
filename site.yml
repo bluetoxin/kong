@@ -16,7 +16,7 @@
 - name: "Install and configure MondoDB"
   hosts: mongodbs
   vars:
-    mongodb_version: "mongodb-linux-{{ arch }}-{{ version_ubuntu }}-{{ version_mongodb }}"
+    mongodb_version: "mongodb-linux-{{ arch }}-{{ version_ubuntu_link }}-{{ version_mongodb }}"
   roles:
     - mongo
 

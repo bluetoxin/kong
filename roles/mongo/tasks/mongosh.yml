@@ -1,0 +1,23 @@
+---
+# Install mongosh
+
+- name: Install gnupg
+  apt:
+    name: gnupg
+    state: present
+
+- name: Add apt-key for mongosh
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-6.0.asc
+    state: present
+  
+- name: Add repository for mongosh
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ version_ubuntu }}/mongodb-org/6.0 multiverse"
+    state: present
+
+- name: Install mongosh
+  apt:
+    name: mongodb-mongosh
+    state: present
+  

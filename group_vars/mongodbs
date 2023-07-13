@@ -1,3 +1,3 @@
 arch: aarch64
-version_ubuntu: ubuntu2004
+version_ubuntu_link: ubuntu2004
 version_mongodb: 6.0.7
