@@ -15,14 +15,14 @@
     src: mongod.service.j2
     dest: /etc/init.d/mongod
     mode: a+x
-  notify: start mongo
+  notify: restart mongo
 
 - name: Fetch and unarchive mongod tarball
   unarchive:
     src: "https://fastdl.mongodb.org/linux/{{ mongodb_version }}.tgz"
     dest: /tmp
     remote_src: yes
-  notify: start mongo
+  notify: restart mongo
 
 - name: Get all mongo related binaries
   find:

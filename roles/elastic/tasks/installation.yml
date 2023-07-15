@@ -30,3 +30,4 @@
     block: |  
       cluster.name: graylog
       action.auto_create_index: false
+  notify: restart es

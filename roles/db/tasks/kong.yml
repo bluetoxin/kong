@@ -1,0 +1,17 @@
+---
+# Create user and database for kong
+
+- name: Create kong user and database
+  become: true
+  become_user: postgres
+  become_method: su
+  block:
+   - name: Create kong user
+     postgresql_user:
+       name: "{{ pg_user }}"
+       password: "{{ pg_password }}"
+   - name: Create database for kong
+     postgresql_db:
+       name: "{{ pg_database }}"
+       owner: "{{ pg_user }}"
+

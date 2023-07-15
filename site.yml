@@ -3,13 +3,13 @@
 
 - name: "Install and configure PostgreSQL (DB for Kong)"
   hosts: dbs
-  vars:
-    kong_version: "gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
   roles:
     - db
 
 - name: "Install and configure Kong API Gateway"
   hosts: proxies
+  vars:
+    kong_version: "gateway-3.x-ubuntu-{{ version_ubuntu }}/pool/all/k/kong/kong_{{ version_kong }}_{{ architecture }}.deb"
   roles:
     - proxy
 
@@ -27,6 +27,8 @@
 
 - name: "Install and configure Graylog"
   hosts: graylogs
+  vars:
+    graylog_version: "graylog-{{ version }}-linux-{{ arch }}.tgz"
   roles:
     - graylog
 

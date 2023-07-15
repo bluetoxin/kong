@@ -1,0 +1,6 @@
+---
+# Install and Configure GrayLog
+
+- name: Install GrayLog
+  import_tasks: installation.yml
+  tags: [gl, install_gl]

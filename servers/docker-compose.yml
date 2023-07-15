@@ -20,11 +20,7 @@ services:
     ports:
       - 0:22
       - 80:8080 # Kong Proxy Port
-  graylog:
-    <<: *server
-    ports:
-      - 0:22
-      - 9000:9000 # Graylog UI 
+  db: *server
   mongodb: 
     <<: *server
     platform: linux/arm64 # Mongo doesn't work with Rosetta 2
@@ -34,7 +30,12 @@ services:
     ports:
       - 0:22
       - 9200:9200 # ES default port
-  db: *server
+  graylog:
+    <<: *server
+    platform: linux/arm64 
+    ports:
+      - 0:22
+      - 9000:9000 # Graylog UI 
 
 networks:
   servernetwork:

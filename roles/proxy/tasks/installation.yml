@@ -1,0 +1,35 @@
+---
+# Install Kong API Gateway
+
+- name: Check if Kong is already installed
+  command: dpkg-query -W kong
+  changed_when: kong_deb.rc == 1
+  failed_when: kong_deb.rc > 1
+  register: kong_deb
+
+- name: Fetch Kong deb-package
+  get_url:
+    url: "https://download.konghq.com/{{ kong_version }}"
+    dest: /tmp/kong.deb
+  when: kong_deb.changed
+
+- name: Install dpkg package
+  apt:
+    deb: /tmp/kong.deb
+  when: kong_deb.changed
+
+- name: Copy kong.conf
+  template:
+    src: kong.conf.j2  
+    dest: /etc/kong/kong.conf
+  notify: restart kong
+
+- name: Copy init.d config
+  template:
+    src: kong.service.j2
+    dest: /etc/init.d/kong
+    mode: a+x
+  notify: restart kong
+
+- name: Flush handlers
+  meta: flush_handlers

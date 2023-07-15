@@ -1,82 +1,19 @@
 ---
-# This playbook installs kong and configures it 
+# Install and Configure Kong
 
-- name: Change ulimit for kong
+- name: Change ulimit for Kong
   pam_limits:
     domain: "*"
     limit_type: "-"
     limit_item: nofile
     value: 4096
-  tags: [kong, ulimit_kong]
+  tags: [kong]
 
-- name: Check if kong is already installed
-  command: dpkg-query -W kong
-  changed_when: kong_deb.rc == 1
-  failed_when: kong_deb.rc > 1
-  register: kong_deb
+- name: Install Kong
+  import_tasks: installation.yml
   tags: [kong, install_kong]
 
-- name: Fetch kong deb-package
-  get_url:
-    url: "https://download.konghq.com/{{ kong_version }}"
-    dest: /tmp/kong.deb
-  when: kong_deb.changed
-  tags: [kong, install_kong]
+- name: Create kong entities
+  import_tasks: kong_entities.yml
+  tags: [kong, entities_kong]
 
-- name: Install dpkg package
-  apt:
-    deb: /tmp/kong.deb
-  when: kong_deb.changed
-  tags: [kong, install_kong]
-
-- name: Copy config to proxy-host
-  template:
-    src: kong.conf.j2  
-    dest: /etc/kong/kong.conf
-  notify: start kong service
-  tags: [kong, setup_kong]
-
-- name: Copy kong service config to /etc/init.d/kong
-  template:
-    src: kong.service.j2
-    dest: /etc/init.d/kong
-    mode: a+x
-  notify: start kong service
-  tags: [kong, setup_kong]
-
-- name: Flush all handlers
-  meta: flush_handlers
-  tags: [kong, setup_kong]
-
-- name: Pause for a while to make sure that kong is started
-  pause:
-    seconds: 20
-  tags: [kong, setup_kong]
-
-- name: Create kong service and route
-  notify: reload kong
-  tags: [kong, configure_kong]
-  block:
-  - name: Create kong service
-    uri:
-      url: "http://localhost:{{ http_admin_listen }}/services"
-      method: POST
-      body_format: form-urlencoded
-      body:
-        name: example_service
-        url: "http://ifconfig.me"
-    changed_when: service.status == 201
-    failed_when: not service.status in [409, 201]
-    register: service
-  - name: Create kong route
-    uri:
-      url: "http://localhost:{{ http_admin_listen }}/services/{{ service.json.name if service.changed else service.json.fields.name }}/routes"
-      method: POST
-      body_format: form-urlencoded
-      body:
-        name: example_route
-        paths:
-          - /
-    changed_when: route.status == 201
-    failed_when: not route.status in [409, 201]
-    register: route

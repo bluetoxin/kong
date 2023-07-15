@@ -1,5 +1,5 @@
 ---
 # Handlers to manage MongoDB
 
-- name: start mongo
-  command: service mongod start # TODO: Issue with 'ansible.builtin.service'
+- name: restart mongo
+  command: service mongod restart # TODO: Issue with 'ansible.builtin.service'

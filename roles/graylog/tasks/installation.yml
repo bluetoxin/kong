@@ -1,0 +1,9 @@
+---
+# Steps to install GrayLog
+
+- name: Fetch GrayLog .tgz and unarchive it
+  unarchive:
+    src: "https://downloads.graylog.org/releases/graylog/{{ graylog_version }}"
+    dest: /tmp
+    remote_src: yes
+
