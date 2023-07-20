@@ -1,38 +1,75 @@
 Role Name
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Simple role to install and set up Kong.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+You may need a postgresql role if you want to set up Kong in PostgreSQL mode. If you set it up in DBless mode, there are no special requirements.  
+
+Role Variables
+--------------
+
+1) "kong_version" defines version to be installed
+2) "kong_url" defines url form which you fetch package
+3) add settable variables from kong.conf (https://github.com/Kong/kong/blob/master/kong.conf.default)
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Install and configure kong in dbless mode
+roles:
+  - role: kong
+    database: "off"
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install and configure kong in postgresql mode
+roles:
+  - role: kong
+    pg_host: tests-db-1
+    pg_password: kong
+
+Create service and route (both dbless and postgresql mode)
+roles:
+  - role: kong
+    <-- here your desired mode -->
+    perform_actions:
+      - action: add
+        kong_entity: services
+        entity_name: example_service
+        entity_params:
+          url: http://ifconfig.me
+      - action: add
+        kong_entity: routes
+        entity_name: example_route
+        entity_params:
+          service:
+            name: example_service
+          paths:
+            - /
+            - /example_route
+
+Remove kong entity (both dbless and postgresql mode)
+roles:
+  - role: kong
+    <-- here your desired mode -->
+    perform_actions:
+      - action: remove
+        kong_entity: services
+        entity_name: example_service
+
+Install kong (in postgresql mode)
+Before that you need to install postgresql, create user "kong" with password "kong" and database "kong" owned by "kong".
+
+Create service and route (in postgresql mode)
+
+Remove kong entity (in postgresql mode)
+
+
+
 
 License
 -------
 
-BSD
+Apache-2.0 license
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).

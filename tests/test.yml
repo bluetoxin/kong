@@ -1,24 +1,22 @@
 ---
 
-- hosts: 
-    - control_plane
+- hosts: kong_node
   roles:
     - role: kong
       database: "off"
       perform_actions:
         - action: add
           kong_entity: services
-          entity_name: example_service
           entity_params:
-            url: http://ifconfig.me 
+            - name: example_service
+              url: http://ifconfig.me
         - action: add
           kong_entity: routes
-          entity_name: example_route
           entity_params:
-            service: example_service
-            paths:
-              - /
-        #- action: remove
-        #  kong_entity: services
-        #  entity_name: example_service
+            - name: example_route
+              service:
+                name: example_service
+              paths:
+                - /
+                - /example_route
 

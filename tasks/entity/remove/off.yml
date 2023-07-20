@@ -1,7 +1,7 @@
 ---
 
 - name: "Remove entity {{ kong_entity }} with name {{ entity_name }}"
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ declarative_config }}"
     marker: "# {{ kong_entity }} {{ entity_name }} {mark}"
     state: absent

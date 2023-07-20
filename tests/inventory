@@ -1,11 +1,6 @@
-[control_plane]
-cp1:55011
-
-[data_plane]
-dp1:55000
-dp2:55001
-dp3:55004
+[kong_node]
+kong:55021
 
 [database]
-db:55003
+db:55016
 

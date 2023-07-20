@@ -16,10 +16,7 @@ x-server: &server
 
 services:
   db: *server
-  dp1: *server
-  dp2: *server
-  dp3: *server
-  cp1:
+  kong:
     <<: *server
     ports:
       - 0:22

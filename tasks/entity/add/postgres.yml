@@ -1,0 +1,33 @@
+---
+
+#- name: "Add entity {{ kong_entity }} with name {{ entity_name }}"
+#  ansible.builtin.uri:
+#    url: "http://{{ admin_listen | split | first | split(':') | first }}:{{ admin_listen | split | first | split(':') | last }}/{{ kong_entity }}"
+#    method: POST
+#    body_format: json
+#    status_code: 
+#      - 201
+#      - 409
+#    body: |
+#      {
+#        "name": "{{ entity_name }}",
+#        {% for params_name, params_value in entity_params.items() %}
+#          {% if params_value is iterable and params_value is not string %}
+#            "{{ params_name }}": [ {% for value in params_value %} "{{ value }}" {% if not loop.last %}, {% endif %} {% endfor %} ]
+#          {% else %}
+#            "{{ params_name }}": "{{ params_value }}"
+#          {% endif %}
+#          {% if not loop.last %},{% endif %}
+#        {% endfor %}
+#      }
+
+- name: "Add entity {{ kong_entity }} with name {{ entity_name }}"
+  ansible.builtin.uri:
+    url: "http://{{ admin_listen | split | first | split(':') | first }}:{{ admin_listen | split | first | split(':') | last }}/{{ kong_entity }}"
+    method: POST
+    body_format: form-urlencoded
+    status_code: 
+      - 201
+      - 409
+    body: name={{ entity_name }}{% for params_name, params_value in entity_params.items() -%}&{{ params_name }}={{ params_value }}{%- endfor %}
+
