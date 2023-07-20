@@ -1,0 +1,196 @@
+#------------------------------------------------------------------------------
+# GENERAL
+#------------------------------------------------------------------------------
+prefix = {{ prefix }}
+log_level = {{ log_level }}
+proxy_access_log = {{ proxy_access_log }}
+proxy_error_log = {{ proxy_error_log }}
+proxy_stream_access_log = {{ proxy_stream_access_log }}
+proxy_stream_error_log = {{ proxy_stream_error_log }}
+admin_access_log = {{ admin_access_log }}
+admin_error_log = {{ admin_error_log }}
+status_access_log = {{ status_access_log }}
+status_error_log = {{ status_error_log }}
+vaults = {{ vaults }}
+opentelemetry_tracing = {{ opentelemetry_tracing }}
+tracing_instrumentations = {{ tracing_instrumentations }}
+opentelemetry_tracing_sampling_rate = {{ opentelemetry_tracing_sampling_rate }}
+tracing_sampling_rate = {{ tracing_sampling_rate }}
+plugins = {{ plugins }}
+port_maps = {{ port_maps }}
+anonymous_reports = {{ anonymous_reports }}
+proxy_server = {{ proxy_server }}
+proxy_server_ssl_verify = {{ proxy_server_ssl_verify }}
+error_template_html = {{ error_template_html }}
+error_template_json = {{ error_template_json }}
+error_template_xml = {{ error_template_xml }}
+error_template_plain = {{ error_template_plain }}
+#------------------------------------------------------------------------------
+# HYBRID MODE
+#------------------------------------------------------------------------------
+role = {{ role }}
+cluster_mtls = {{ cluster_mtls }}
+cluster_cert = {{ cluster_cert }}
+cluster_cert_key = {{ cluster_cert_key }}
+cluster_ca_cert = {{ cluster_ca_cert }}
+#------------------------------------------------------------------------------
+# HYBRID MODE DATA PLANE
+#------------------------------------------------------------------------------
+cluster_server_name = {{ cluster_server_name }}
+cluster_control_plane = {{ cluster_control_plane }}
+cluster_max_payload = {{ cluster_max_payload }}
+cluster_dp_labels = {{ cluster_dp_labels }}
+#------------------------------------------------------------------------------
+# HYBRID MODE CONTROL PLANE
+#------------------------------------------------------------------------------
+cluster_listen = {{ cluster_listen }}
+cluster_data_plane_purge_delay = {{ cluster_data_plane_purge_delay }}
+cluster_ocsp = {{ cluster_ocsp }}
+cluster_use_proxy = {{ cluster_use_proxy }}
+#------------------------------------------------------------------------------
+# NGINX
+#------------------------------------------------------------------------------
+proxy_listen = {{ proxy_listen }}
+stream_listen = {{ stream_listen }}
+admin_listen = {{ admin_listen }}
+status_listen = {{ status_listen }}
+nginx_user = {{ nginx_user }}
+nginx_worker_processes = {{ nginx_worker_processes }}
+nginx_daemon = {{ nginx_daemon }}
+mem_cache_size = {{ mem_cache_size }}
+ssl_cipher_suite = {{ ssl_cipher_suite }}
+ssl_ciphers = {{ ssl_ciphers }}
+ssl_protocols = {{ ssl_protocols }}
+ssl_prefer_server_ciphers = {{ ssl_prefer_server_ciphers }}
+ssl_dhparam = {{ ssl_dhparam }}
+ssl_session_tickets = {{ ssl_session_tickets }}
+ssl_session_timeout = {{ ssl_session_timeout }}
+ssl_session_cache_size = {{ ssl_session_cache_size }}
+ssl_cert = {{ ssl_cert }}
+ssl_cert_key = {{ ssl_cert_key }}
+client_ssl = {{ client_ssl }}
+client_ssl_cert = {{ client_ssl_cert }}
+client_ssl_cert_key = {{ client_ssl_cert_key }}
+admin_ssl_cert = {{ admin_ssl_cert }}
+admin_ssl_cert_key = {{ admin_ssl_cert_key }}
+status_ssl_cert = {{ status_ssl_cert }}
+status_ssl_cert_key = {{ status_ssl_cert_key }}
+headers = {{ headers }}
+trusted_ips = {{ trusted_ips }}
+real_ip_header = {{ real_ip_header }}
+real_ip_recursive = {{ real_ip_recursive }}
+error_default_type = {{ error_default_type }}
+upstream_keepalive_pool_size = {{ upstream_keepalive_pool_size }}
+upstream_keepalive_max_requests = {{ upstream_keepalive_max_requests }}
+upstream_keepalive_idle_timeout = {{ upstream_keepalive_idle_timeout }}
+allow_debug_header = {{ allow_debug_header }}
+#------------------------------------------------------------------------------
+# NGINX injected directives
+#------------------------------------------------------------------------------
+nginx_main_worker_rlimit_nofile = {{ nginx_main_worker_rlimit_nofile }}
+nginx_events_worker_connections = {{ nginx_events_worker_connections }}
+nginx_http_client_header_buffer_size = {{ nginx_http_client_header_buffer_size }}
+nginx_http_large_client_header_buffers = {{ nginx_http_large_client_header_buffers }}
+nginx_http_client_max_body_size = {{ nginx_http_client_max_body_size }}
+nginx_admin_client_max_body_size = {{ nginx_admin_client_max_body_size }}
+nginx_http_charset = {{ nginx_http_charset }}
+nginx_http_client_body_buffer_size = {{ nginx_http_client_body_buffer_size }}
+nginx_admin_client_body_buffer_size = {{ nginx_admin_client_body_buffer_size }}
+nginx_http_lua_regex_match_limit = {{ nginx_http_lua_regex_match_limit }}
+nginx_http_lua_regex_cache_max_entries = {{ nginx_http_lua_regex_cache_max_entries }}
+#------------------------------------------------------------------------------
+# DATASTORE
+#------------------------------------------------------------------------------
+database = {{ database }}
+pg_host = {{ pg_host }}
+pg_port = {{ pg_port }}
+pg_timeout = {{ pg_timeout }}
+pg_user = {{ pg_user }}
+pg_password = {{ pg_password }}
+pg_database = {{ pg_database }}
+pg_schema = {{ pg_schema }}
+pg_ssl = {{ pg_ssl }}
+pg_ssl_verify = {{ pg_ssl_verify }}
+pg_max_concurrent_queries = {{ pg_max_concurrent_queries }}
+pg_semaphore_timeout = {{ pg_semaphore_timeout }}
+pg_keepalive_timeout = {{ pg_keepalive_timeout }}
+pg_pool_size = {{ pg_pool_size }}
+pg_backlog = {{ pg_backlog }}
+pg_ro_host = {{ pg_ro_host }}
+pg_ro_port = {{ pg_ro_port }}
+pg_ro_timeout = {{ pg_ro_timeout }}
+pg_ro_user = {{ pg_ro_user }}
+pg_ro_password = {{ pg_ro_password }}
+pg_ro_database = {{ pg_ro_database }}
+pg_ro_schema = {{ pg_ro_schema }}
+pg_ro_ssl = {{ pg_ro_ssl }}
+pg_ro_ssl_verify = {{ pg_ro_ssl_verify }}
+pg_ro_max_concurrent_queries = {{ pg_ro_max_concurrent_queries }}
+pg_ro_semaphore_timeout = {{ pg_ro_semaphore_timeout }}
+pg_ro_keepalive_timeout = {{ pg_ro_keepalive_timeout }}
+pg_ro_pool_size = {{ pg_ro_pool_size }}
+pg_ro_backlog = {{ pg_ro_backlog }}
+declarative_config = {{ declarative_config }}
+declarative_config_string = {{ declarative_config_string }}
+lmdb_environment_path = {{ lmdb_environment_path }}
+lmdb_map_size = {{ lmdb_map_size }}
+#------------------------------------------------------------------------------
+# DATASTORE CACHE
+#------------------------------------------------------------------------------
+db_update_frequency = {{ db_update_frequency }}
+db_update_propagation = {{ db_update_propagation }}
+db_cache_ttl = {{ db_cache_ttl }}
+db_cache_neg_ttl = {{ db_cache_neg_ttl }}
+db_resurrect_ttl = {{ db_resurrect_ttl }}
+db_cache_warmup_entities = {{ db_cache_warmup_entities }}
+#------------------------------------------------------------------------------
+# DNS RESOLVER
+#------------------------------------------------------------------------------
+dns_resolver = {{ dns_resolver }}
+dns_hostsfile = {{ dns_hostsfile }}
+dns_order = {{ dns_order }}
+dns_valid_ttl = {{ dns_valid_ttl }}
+dns_stale_ttl = {{ dns_stale_ttl }}
+dns_cache_size = {{ dns_cache_size }}
+dns_not_found_ttl = {{ dns_not_found_ttl }}
+dns_error_ttl = {{ dns_error_ttl }}
+dns_no_sync = {{ dns_no_sync }}
+#------------------------------------------------------------------------------
+# VAULTS
+#------------------------------------------------------------------------------
+vault_env_prefix = {{ vault_env_prefix }}
+#------------------------------------------------------------------------------
+# TUNING & BEHAVIOR
+#------------------------------------------------------------------------------
+worker_consistency = {{ worker_consistency }}
+worker_state_update_frequency = {{ worker_state_update_frequency }}
+router_flavor = {{ router_flavor }}
+lua_max_req_headers = {{ lua_max_req_headers }}
+lua_max_resp_headers = {{ lua_max_resp_headers }}
+lua_max_uri_args = {{ lua_max_uri_args }}
+lua_max_post_args = {{ lua_max_post_args }}
+#------------------------------------------------------------------------------
+# MISCELLANEOUS
+#------------------------------------------------------------------------------
+lua_ssl_trusted_certificate = {{ lua_ssl_trusted_certificate }}
+lua_ssl_verify_depth = {{ lua_ssl_verify_depth }}
+lua_ssl_protocols = {{ lua_ssl_protocols }}
+lua_package_path = {{ lua_package_path }}
+lua_package_cpath = {{ lua_package_cpath }}
+lua_socket_pool_size = {{ lua_socket_pool_size }}
+untrusted_lua = {{ untrusted_lua }}
+untrusted_lua_sandbox_requires = {{ untrusted_lua_sandbox_requires }}
+untrusted_lua_sandbox_environment = {{ untrusted_lua_sandbox_environment }}
+openresty_path = {{ openresty_path }}
+node_id = {{ node_id }}
+#------------------------------------------------------------------------------
+# KONG MANAGER
+#------------------------------------------------------------------------------
+admin_gui_listen = {{ admin_gui_listen }}
+admin_gui_url = {{ admin_gui_url }}
+admin_gui_path = {{ admin_gui_path }}
+admin_gui_api_url = {{ admin_gui_api_url }}
+admin_gui_ssl_cert = {{ admin_gui_ssl_cert }}
+admin_gui_ssl_cert_key = {{ admin_gui_ssl_cert_key }}
+admin_gui_access_log = {{ admin_gui_access_log }}
+admin_gui_error_log = {{ admin_gui_error_log }}

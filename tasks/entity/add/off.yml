@@ -1,0 +1,12 @@
+---
+
+- name: "Add entity {{ kong_entity }} with name {{ entity_name }}"
+  blockinfile:
+    path: "{{ declarative_config }}"
+    marker: "# {{ kong_entity }} {{ entity_name }} {mark}"
+    insertafter: "^{{ kong_entity }}:"
+    block: |
+      - name: {{ entity_name }}
+       {% for entity_name, entity_value in entity_params.items() %}
+       {{ entity_name }}: {{ entity_value }}
+       {% endfor %}

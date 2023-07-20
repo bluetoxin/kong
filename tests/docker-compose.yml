@@ -1,0 +1,29 @@
+version: '3'
+
+x-server: &server
+  platform: linux/amd64
+  restart: always
+  build:
+    context: ./
+  ports:
+    - 0:22
+  networks:
+    - servernetwork
+  ulimits:
+    nofile:
+      soft: 4096
+      hard: 4096 # Necessary ulimit for Kong
+
+services:
+  db: *server
+  dp1: *server
+  dp2: *server
+  dp3: *server
+  cp1:
+    <<: *server
+    ports:
+      - 0:22
+      - 80:8080 # Kong Proxy Port
+
+networks:
+  servernetwork:

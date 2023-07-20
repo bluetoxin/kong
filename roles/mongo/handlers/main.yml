@@ -1,5 +1,0 @@
----
-# Handlers to manage MongoDB
-
-- name: restart mongo
-  command: service mongod restart # TODO: Issue with 'ansible.builtin.service'

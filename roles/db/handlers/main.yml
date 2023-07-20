@@ -1,9 +1,0 @@
----
-# Handlers to manage PostgreSQL
-
-- name: restart psql
-  service:
-    name: postgresql
-    state: restarted
-    enabled: yes
-

@@ -1,8 +1,0 @@
----
-# Handlers to manage GrayLog
-  
-- name: restart graylog
-  service:
-    name: graylog-server
-    state: restarted
-    enabled: yes

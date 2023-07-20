@@ -1,6 +1,0 @@
----
-# Install and Configure ElasticSearch 7.10.2 (the only version that is compatible with Graylog 5.0)
-
-- name: Install ElasticSearch 7.10.2
-  import_tasks: installation.yml
-  tags: [es, install_es]

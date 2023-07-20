@@ -1,0 +1,12 @@
+---
+
+- name: bootstrap kong db
+  command: "kong migrations bootstrap"
+  listen: "restart kong"
+
+- name: turn on kong
+  service: 
+    name: kong
+    state: restarted 
+  listen: "restart kong"
+

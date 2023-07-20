@@ -1,8 +1,0 @@
---- 
-# Handlers to manage ElasticSearch
-
-- name: restart es
-  service:
-    name: elasticsearch
-    state: restarted
-    enabled: yes
