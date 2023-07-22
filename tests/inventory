@@ -1,6 +1,6 @@
 [kong_node]
-kong:55021
+kong:55002
 
 [database]
-db:55016
+db:55000
 

@@ -3,6 +3,10 @@
 - hosts: kong_node
   roles:
     - role: kong
+      # PostgreSQL Mode
+      # pg_host: tests-db-1
+      # pg_password: kong
+      # DBless Mode
       database: "off"
       perform_actions:
         - action: add
@@ -14,9 +18,12 @@
           kong_entity: routes
           entity_params:
             - name: example_route
-              service:
-                name: example_service
+              service: example_service
               paths:
                 - /
                 - /example_route
+            - name: example_route_2
+              service: example_service
+              paths:
+                - /example_route_two
 
