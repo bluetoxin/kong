@@ -2,26 +2,30 @@ Kong Ansible
 =========
 Simple role to start with Kong
 
-Example Playbook
-----------------
+__Install Role__
+```
+ansible-galaxy install bluetoxin.kong
+```
 
-Install and configure kong in dbless mode
+__Example Playbook__  
+
+Install and configure kong in dbless mode  
 ```yaml
 roles:
-  - role: kong
+  - role: bluetoxin.kong
     database: "off"
 ```
 Install and configure kong in postgresql mode
 ```yaml
 roles:
-  - role: kong
+  - role: bluetoxin.kong
     pg_host: tests-db-1
     pg_password: kong
 ```
 Create service and route (both dbless and postgresql mode)
 ```yaml
 roles:
-  - role: kong
+  - role: bluetoxin.kong
     <-- here your desired mode (dbless or postgresql) -->
     perform_actions:
       - action: add
