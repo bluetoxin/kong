@@ -1,9 +1,19 @@
 ---
 
-- name: "Add entities {{ kong_entity }}"
-  ansible.builtin.blockinfile:
-    path: "{{ declarative_config }}"
-    marker: "# {{ kong_entity }} {mark}"
-    insertafter: "^{{ kong_entity }}:"
-    block: "{% for item in entity_params -%} - {{ item | to_nice_yaml(indent=2) | indent(2) }} {%- endfor %}"
-
+- name: "Add entities {{ kong_entity }} and run validation"
+  block:
+    - name: "Add entities {{ kong_entity }}"
+      ansible.builtin.blockinfile:
+        path: "{{ declarative_config }}"
+        marker: "# {{ kong_entity }} {mark}"
+        insertafter: "^{{ kong_entity }}:"
+        block: "{% for item in entity_params -%} - {{ item | to_nice_yaml(indent=2) | indent(2) }} {%- endfor %}"
+    - name: "Run validation"
+      ansible.builtin.command: "kong config parse {{ declarative_config }}"
+  rescue:
+    - name: "Remove entities {{ kong_entity }} due to previous error"
+      ansible.builtin.blockinfile:
+        path: "{{ declarative_config }}"
+        marker: "# {{ kong_entity }} {mark}"
+        state: absent
+      
