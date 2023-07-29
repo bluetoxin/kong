@@ -4,7 +4,8 @@ x-server: &server
   platform: linux/amd64
   restart: always
   build:
-    context: ./
+    context: .
+    dockerfile: alpine.Dockerfile
   ports:
     - 0:22
   networks:
@@ -15,12 +16,11 @@ x-server: &server
       hard: 4096 # Necessary ulimit for Kong
 
 services:
-  db: *server
   kong:
     <<: *server
     ports:
-      - 0:22
-      - 80:8080 # Kong Proxy Port
+      - 55555:22 # Expose port to provision kong via ansible
+      - 80:8000 # Kong Proxy Port
 
 networks:
   servernetwork:

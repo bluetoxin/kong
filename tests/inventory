@@ -1,6 +1,2 @@
-[kong_node]
-kong:55002
-
-[database]
-db:55000
-
+[kong]
+localhost:55555
