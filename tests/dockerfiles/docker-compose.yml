@@ -19,7 +19,7 @@ services:
   kong:
     <<: *server
     ports:
-      - 55555:22 # Expose port to provision kong via ansible
+      - 22222:22 # Expose port to provision kong via ansible
       - 80:8000 # Kong Proxy Port
 
 networks:

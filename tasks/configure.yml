@@ -1,0 +1,31 @@
+---
+
+- name: Copy kong.conf template
+  ansible.builtin.template:
+    src: kong.conf.j2  
+    dest: /etc/kong/kong.conf
+    validate: "kong check %s"
+  notify: restart kong
+
+- name: Copy kong.yml template
+  ansible.builtin.template:
+    src: kong.yml.j2
+    dest: "{{ declarative_config }}"
+  when: database == 'off'
+  notify: restart kong
+
+- name: Copy init.d config file
+  ansible.builtin.copy:
+    src: kong.service
+    dest: /etc/init.d/kong
+    mode: a+x
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Wait until kong's proxy listen port starts
+  ansible.builtin.wait_for:
+    host: "{{ proxy_listen | split | first | split(':') | first}}" 
+    port: "{{ proxy_listen | split | first | split(':') | last }}"
+    state: started
+    timeout: 60

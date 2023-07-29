@@ -1,0 +1,17 @@
+---
+
+- name: Install necessary dependancies
+  community.general.apk:
+    name:
+      - tar
+      - perl
+      - zlib-dev
+      - bash
+      - openrc
+    update_cache: yes
+
+- name: Fetch Kong archive and unarchive it
+  ansible.builtin.unarchive:
+    remote_src: yes
+    src: "{{ kong_url }}{{ kong_package_name }}"
+    dest: /

@@ -1,7 +1,7 @@
 FROM alpine
 
 # Install openssh server
-RUN apk add openssh
+RUN apk add openssh python3
 
 # Generate host keys
 RUN ssh-keygen -A

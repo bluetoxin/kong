@@ -18,6 +18,9 @@
   ansible.builtin.include_tasks: 'install/{{ ansible_os_family | lower }}.yml'
   when: "not 'kong' in ansible_facts.packages"
 
+- name: Configure Kong
+  ansible.builtin.include_tasks: configure.yml
+
 - name: Check if perform_actions is defined and if so change kong configuration
   ansible.builtin.include_tasks: 'entity/{{ action }}/{{ database }}.yml'
   when: perform_actions is defined
@@ -33,4 +36,3 @@
     name: kong
     state: reloaded
   when: "database == 'off'"
-

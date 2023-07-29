@@ -1,0 +1,4 @@
+---
+
+kong_package_name: "gateway-{{ kong_version | split('.') | first }}.x-{{ ansible_distribution | lower }}/kong-{{ kong_version }}.{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.apk.tar.gz"
+

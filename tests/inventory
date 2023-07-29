@@ -1,2 +1,2 @@
-[kong]
-localhost:55555
+[kong_node]
+localhost:22222
