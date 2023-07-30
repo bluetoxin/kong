@@ -16,8 +16,3 @@
         path: "{{ declarative_config }}"
         marker: "# {{ kong_entity }} {mark}"
         state: absent
-     
-- name: Reload Kong
-  ansible.builtin.service:
-    name: kong
-    state: reloaded

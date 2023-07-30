@@ -59,3 +59,10 @@
     entity_name: "{{ item.entity_name }}"
     entity_params: "{{ item.entity_params }}"
   loop: "{{ perform_actions }}"
+
+- name: Reload Kong
+  ansible.builtin.service:
+    name: kong
+    state: reloaded
+  tags: perform_actions
+  when: "database == 'off'"

@@ -1,0 +1,21 @@
+---
+
+- name: "Get entities {{ kong_entity }}"
+  ansible.builtin.command: "sed -n '/# routes BEGIN/,/# routes END/ { /# routes BEGIN/! { /# routes END/! p } }' {{ declarative_config }}"
+  register: kong_entity_state
+
+- name: Remove entities and validate kong.yml
+  block:
+    - name: "Pop entities {{ kong_entity }} from {{ declarative_config }}"
+      ansible.builtin.blockinfile:
+        path: "{{ declarative_config }}"         
+        marker: "# {{ kong_entity }} {mark}"
+        block: "{{ kong_entity_state | pop_kong_entity(entity_params) }}"
+    - name: "Run validation"
+      ansible.builtin.command: "kong config parse {{ declarative_config }}"
+  rescue:
+   - name: "Restore entities {{ kong_entity }} due to previous error"
+     ansible.builtin.blockinfile:
+       path: "{{ declarative_config }}"
+       marker: "# {{ kong_entity }} {mark}"
+       block: "{{ kong_entity_state }}"

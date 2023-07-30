@@ -1,6 +1,6 @@
-Kong Ansible
+Kong Ansible Role
 =========
-Simple role to start with Kong
+Ansible Role for Kong API Gateway
 
 __Install Role__
 ```
@@ -22,7 +22,7 @@ roles:
     pg_host: tests-db-1
     pg_password: kong
 ```
-Create service and route (both dbless and postgresql mode)
+Create service and route
 ```yaml
 roles:
   - role: bluetoxin.kong
@@ -45,6 +45,17 @@ roles:
             service: example_service
             paths:
               - /example_route_two
+```
+Remove entity from config
+```yaml
+roles:
+  - role: kong
+    <-- here your desired mode (dbless or postgresql) -->
+    perform_actions:
+      - action: remove
+        kong_entity: routes
+        entity_params:
+          - name: example_route_2
 ```
 Supported Platforms
 -------
