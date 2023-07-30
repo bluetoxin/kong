@@ -3,12 +3,22 @@
 - name: Include host related variables
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: Install python-apt against Debian-based hosts
+- name: Update apt-cache
   ansible.builtin.apt:
-    name: python-apt
-    state: present
     update_cache: yes
+
+- name: Install python(3)-apt against Debian-based hosts
   when: ansible_os_family | lower == 'debian'
+  block:
+    - name: Install python3-apt
+      ansible.builtin.apt:
+        name: python3-apt
+        state: present
+  rescue:
+    - name: Install python-apt
+      ansible.builtin.apt:
+        name: python-apt
+        state: present
 
 - name: Gather the package facts
   ansible.builtin.package_facts:
