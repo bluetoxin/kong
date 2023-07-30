@@ -9,7 +9,6 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - focal
-    - name: Alpine
   galaxy_tags: ['kong', 'kong-dbless', 'kong-postgres']
  
 dependencies: []

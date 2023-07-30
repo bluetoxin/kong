@@ -46,6 +46,13 @@ roles:
             paths:
               - /example_route_two
 ```
+Supported Platforms
+-------
++ Ubuntu/Debian
++ Alpine (nightly)
++ AmazonLinux (nightly)
+
+Although you can install Kong on Alpine or Amazon Linux hosts, I highly recommend choosing Ubuntu/Debian platforms instead.
 
 License
 -------

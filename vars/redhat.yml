@@ -1,0 +1,5 @@
+--- 
+
+kong_package_name: "gateway-{{ kong_version | split('.') | first }}.x-amazonlinux-2022/Packages/k/kong-{{ kong_version }}.aws.{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.rpm"
+kong_gpg_key: "gateway-{{ kong_version | split('.') | first }}.x-amazonlinux-2022/repodata/repomd.xml.key"
+

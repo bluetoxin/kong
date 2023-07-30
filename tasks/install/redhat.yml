@@ -1,0 +1,17 @@
+---
+
+- name: Import a gpg key for Kong
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ kong_url }}{{ kong_gpg_key }}"
+
+- name: Fetch Kong rpm-package
+  ansible.builtin.get_url:
+    url: "{{ kong_url }}{{ kong_package_name }}"
+    dest: /tmp/kong.rpm
+
+- name: Install Kong rpm-package
+  ansible.builtin.yum:
+    name: /tmp/kong.rpm
+    state: present
+
