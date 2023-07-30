@@ -2,10 +2,12 @@
 
 - name: Include host related variables
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: install_kong
 
 - name: Update apt-cache
   ansible.builtin.apt:
     update_cache: yes
+  tags: install_kong
 
 - name: Install python(3)-apt against Debian-based hosts
   when: ansible_os_family | lower == 'debian'
@@ -19,20 +21,37 @@
       ansible.builtin.apt:
         name: python-apt
         state: present
+  tags: install_kong
 
 - name: Gather the package facts
   ansible.builtin.package_facts:
     manager: auto
+  tags: install_kong
 
 - name: Install Kong for current OS if it's not installed yet
-  ansible.builtin.include_tasks: 'install/{{ ansible_os_family | lower }}.yml'
+  ansible.builtin.include_tasks:
+    file: 'install/{{ ansible_os_family | lower }}.yml'
+    apply:
+      tags:
+        - install_kong
+  tags: install_kong
   when: "not 'kong' in ansible_facts.packages"
 
 - name: Configure Kong
-  ansible.builtin.include_tasks: configure.yml
+  ansible.builtin.include_tasks:
+    file: configure.yml
+    apply:
+      tags:
+        - configure_kong
+  tags: configure_kong
 
 - name: Check if perform_actions is defined and if so change kong configuration
-  ansible.builtin.include_tasks: 'entity/{{ action }}/{{ database }}.yml'
+  ansible.builtin.include_tasks:
+    file: 'entity/{{ action }}/{{ database }}.yml'
+    apply:
+      tags:
+        - perform_actions
+  tags: perform_actions
   when: perform_actions is defined
   vars:
     action: "{{ item.action }}"
@@ -41,8 +60,3 @@
     entity_params: "{{ item.entity_params }}"
   loop: "{{ perform_actions }}"
 
-- name: Reload Kong
-  ansible.builtin.service:
-    name: kong
-    state: reloaded
-  when: "database == 'off'"
