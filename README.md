@@ -48,11 +48,11 @@ roles:
 ```
 Supported Platforms
 -------
-+ Ubuntu/Debian
++ Ubuntu
 + Alpine (nightly)
 + AmazonLinux (nightly)
 
-Although you can install Kong on Alpine or Amazon Linux hosts, I highly recommend choosing Ubuntu/Debian platforms instead.
+Although you can install Kong on Alpine or Amazon Linux hosts, I highly recommend choosing Ubuntu (Jammy/Focal) platforms instead.
 
 License
 -------
