@@ -1,7 +1,7 @@
-FROM ubuntu
+FROM amazonlinux
 
 # Do necessary steps
-RUN apt update && apt install -y openssh-server
+RUN yum install -y openssh-server 
 RUN mkdir /var/run/sshd
 
 # Allow to connect via password 

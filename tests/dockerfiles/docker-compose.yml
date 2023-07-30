@@ -5,7 +5,7 @@ x-server: &server
   restart: always
   build:
     context: .
-    dockerfile: alpine.Dockerfile
+    dockerfile: debian.Dockerfile
   ports:
     - 0:22
   networks:
