@@ -59,4 +59,3 @@
     entity_name: "{{ item.entity_name }}"
     entity_params: "{{ item.entity_params }}"
   loop: "{{ perform_actions }}"
-

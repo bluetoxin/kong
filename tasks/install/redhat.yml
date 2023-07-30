@@ -14,4 +14,3 @@
   ansible.builtin.yum:
     name: /tmp/kong.rpm
     state: present
-

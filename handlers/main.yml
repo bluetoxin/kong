@@ -9,4 +9,3 @@
     name: kong
     state: restarted 
   listen: "restart kong"
-

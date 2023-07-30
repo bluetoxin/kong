@@ -26,4 +26,3 @@
               service: example_service
               paths:
                 - /example_route_two
-

@@ -1,4 +1,3 @@
 ---
 
 kong_package_name: "gateway-{{ kong_version | split('.') | first }}.x-{{ ansible_distribution | lower }}-{{ ansible_distribution_release }}/pool/all/k/kong/kong_{{ kong_version }}_{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}.deb"
-

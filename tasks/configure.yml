@@ -2,7 +2,7 @@
 
 - name: Copy kong.conf template
   ansible.builtin.template:
-    src: kong.conf.j2  
+    src: kong.conf.j2
     dest: /etc/kong/kong.conf
     validate: "kong check %s"
   notify: restart kong
@@ -25,7 +25,7 @@
 
 - name: Wait until kong's proxy listen port starts
   ansible.builtin.wait_for:
-    host: "{{ proxy_listen | split | first | split(':') | first}}" 
+    host: "{{ proxy_listen | split | first | split(':') | first}}"
     port: "{{ proxy_listen | split | first | split(':') | last }}"
     state: started
     timeout: 60

@@ -12,4 +12,3 @@ galaxy_info:
   galaxy_tags: ['kong', 'kong-dbless', 'kong-postgres']
  
 dependencies: []
-
