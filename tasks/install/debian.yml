@@ -8,4 +8,3 @@
 - name: Install deb-package
   ansible.builtin.apt:
     deb: /tmp/kong.deb
-  notify: restart kong
