@@ -1,0 +1,11 @@
+---
+
+- name: "Remove entities {{ kong_entity }}"
+  ansible.builtin.uri:
+    url: "http://{{ admin_listen | split | first | split(':') | first }}:{{ admin_listen | split | first | split(':') | last }}/{{ kong_entity }}/{{ entity_param.name }}"
+    method: DELETE
+    status_code:
+      - 204
+  loop: "{{ entity_params }}"
+  loop_control:
+    loop_var: entity_param
